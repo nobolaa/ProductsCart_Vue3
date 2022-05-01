@@ -27,6 +27,7 @@
                     <td>{{ key }}</td>
                     <td>${{ getProductByName(key).price.USD }}</td>
                     <td class="center">{{ quantity }}</td>
+                    <td>${{ getSubTotal(key, quantity) }}</td>
                     <td class="center">
                     <button @click="remove(key)" class="btn btn-light cart-remove">
                         &times;
@@ -61,6 +62,9 @@ export default {
       }
 
       return total.toFixed(2)
+    },
+    getSubTotal (name, quantity) {
+      return (this.getProductByName(name).price.USD * quantity).toFixed(2)
     }
   }
 }
