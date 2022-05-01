@@ -12,13 +12,53 @@
             <span>Past Orders</span>
           </router-link>
         </nav>
-        <!-- <router-link to="" @click="toggleCartContainer(true)" class="top-bar-cart-link">
+        <div @click="toggleCartContainer(true)" class="top-bar-cart-link">
           <i class="icofont-cart-alt icofont-1x"></i>
           <span>Cart ({{Object.keys(cart).length}})</span>
-        </router-link> -->
+        </div>
       </header>
-  <router-view/>
+  <router-view :inventory="inventory" :addToCart="addToCart"/>
+
+  <CartContainer
+    v-if="showCartContainer"
+    :toggle="toggleCartContainer"
+    :cart="cart"
+    :inventory="inventory"
+    :remove="removeItem"
+  />
 </template>
+
+<script>
+import CartContainer from './components/CartContainer.vue'
+import food from './food.json'
+
+export default {
+  components: {
+    CartContainer
+  },
+  data () {
+    return {
+      showCartContainer: true,
+      inventory: food,
+      cart: {}
+    }
+  },
+  methods: {
+    addToCart (name, index) {
+      if (!this.cart[name]) this.cart[name] = 0
+      this.cart[name] += this.inventory[index].quantity
+      this.inventory[index].quantity = 0
+      console.log(this.cart)
+    },
+    toggleCartContainer (value) {
+      this.showCartContainer = value
+    },
+    removeItem (name) {
+      delete this.cart[name]
+    }
+  }
+}
+</script>
 <!--
 <style>
 #app {
